@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://pecule.projectp.fr/sitemap.xml

@@ -10,7 +10,9 @@ RUN apk add --no-cache ca-certificates unzip wget \
     && rm /tmp/pb.zip
 
 COPY pb_migrations /pb/pb_migrations
+# robots.txt qui interdit l'indexation de l'API et de son interface d'admin
+COPY pb_public /pb/pb_public
 
 EXPOSE 8090
 
-CMD ["/pb/pocketbase", "serve", "--http=0.0.0.0:8090", "--dir=/pb/pb_data", "--migrationsDir=/pb/pb_migrations"]
+CMD ["/pb/pocketbase", "serve", "--http=0.0.0.0:8090", "--dir=/pb/pb_data", "--migrationsDir=/pb/pb_migrations", "--publicDir=/pb/pb_public"]
