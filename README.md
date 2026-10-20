@@ -18,12 +18,15 @@ Pécule est un tableau de bord de dépenses personnelles. On crée son compte, o
 **🎯 Un objectif qui motive**
 
 - À l'inscription : l'objet dont on rêve et son prix, puis l'habitude qu'on serait prêt à arrêter (café du matin, livraison de repas, cigarettes…) et son coût par mois.
+- L'habitude se choisit parmi des idées courantes, **parmi vos propres dépenses** (moyenne des 3 derniers mois) ou dans une liste d'exemples (Netflix, forfait téléphone…).
 - Pécule calcule en combien de mois l'objet est payé, et la date d'arrivée.
+- On peut **ignorer l'objectif** à l'inscription : ce choix est retenu, et l'objectif reste accessible depuis le tableau de bord.
 - Sur le tableau de bord : la progression, et des **accélérateurs** tirés des vraies dépenses (« en réduisant Restaurants de 30 %, 3 mois plus tôt »).
 
 **📊 Dépenses et analyse**
 
-- Ajout, modification et suppression d'une dépense : montant, date, catégorie, note.
+- Ajout, modification et suppression d'une dépense : quoi, montant, catégorie, date.
+- **Suggestions** : une centaine d'exemples courants ([`src/data/expense-examples.json`](src/data/expense-examples.json)) et vos dépenses passées ; en choisir une remplit la catégorie et le montant habituel.
 - Total du mois et écart avec le mois précédent, moyenne par jour, plus grosse dépense, top 3 des catégories.
 - Graphiques : répartition par catégorie, cumul du mois comparé au mois précédent, les 6 derniers mois.
 - Filtres par mois et par catégorie.

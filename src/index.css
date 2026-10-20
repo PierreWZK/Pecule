@@ -256,6 +256,10 @@ button.link { background: none; border: 0; padding: 0; color: var(--gold); text-
 .habit.active { border-color: var(--gold); background: #f4b94214; }
 .habit .muted { font-size: .82rem; }
 .result h1 .big { font-size: inherit; }
+.habit-group { border: 0; margin: 0; padding: 0; display: grid; gap: .5rem; min-width: 0; }
+.habit-group legend { font-size: .9rem; font-weight: 600; margin-bottom: .5rem; padding: 0; }
+.habit-final { display: grid; grid-template-columns: 1.6fr 1fr; gap: .75rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+@media (max-width: 560px) { .habit-final { grid-template-columns: 1fr; } }
 
 /* Notification */
 .toast {

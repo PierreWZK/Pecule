@@ -59,6 +59,9 @@ export function saveGoal(goal, { item, price, habit, habit_monthly }) {
   return goal ? pb.collection('goals').update(goal.id, data) : pb.collection('goals').create({ ...data, user: me() });
 }
 
+/** « Ignorer l'objectif » : retenu sur le compte (le SDK met à jour la session avec le compte modifié) */
+export const skipGoal = () => pb.collection('users').update(me(), { goal_skipped: true });
+
 /** Un nouvel objectif repart de zéro : on remplace l'ancien */
 export async function restartGoal(goal, data) {
   if (goal) await pb.collection('goals').delete(goal.id);

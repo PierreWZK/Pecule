@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { loadAll, pb, saveAnswer, signOut } from './api.js';
+import { loadAll, pb, saveAnswer, signOut, skipGoal } from './api.js';
 import { clearLocalAnswers, localAnswers } from './lib/localChallenge.js';
 import { todayKey } from './lib/dates.js';
 import Nav from './components/Nav.jsx';
@@ -50,7 +50,8 @@ export default function App() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [toast, setToast] = useState(null);
-  const [skipGoal, setSkipGoal] = useState(false);
+  // Objectif fermé pendant cette visite (enregistré, annulé ou ignoré)
+  const [goalClosed, setGoalClosed] = useState(false);
   const today = todayKey();
 
   useEffect(() => pb.authStore.onChange((_, record) => setUser(pb.authStore.isValid ? record : null)), []);
@@ -88,19 +89,27 @@ export default function App() {
   if (!data) return <main className="center"><p className="muted">Chargement de votre pécule…</p></main>;
 
   const editingGoal = route === 'objectif';
-  if ((!data.goal && !skipGoal) || editingGoal) {
+  if ((!data.goal && !user.goal_skipped && !goalClosed) || editingGoal) {
+    const close = () => {
+      setGoalClosed(true);
+      if (editingGoal) location.hash = '#/';
+    };
     return (
       <Onboarding
         user={user}
         goal={data.goal}
+        expenses={data.expenses}
+        today={today}
+        firstTime={!editingGoal}
         onDone={(goal) => {
           update(() => ({ goal }));
-          setSkipGoal(true);
-          if (editingGoal) location.hash = '#/';
+          close();
         }}
-        onSkip={() => {
-          setSkipGoal(true);
-          if (editingGoal) location.hash = '#/';
+        onCancel={close}
+        onIgnore={() => {
+          close();
+          // Retenu sur le compte ; en cas d'échec, l'objectif sera simplement redemandé à la prochaine connexion
+          skipGoal().catch(() => {});
         }}
       />
     );

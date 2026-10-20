@@ -94,3 +94,32 @@ test('défi : questions valides, même question pour tous, série', () => {
   assert.equal(streak(['2026-10-18', '2026-10-19'], '2026-10-20'), 2);
   assert.equal(streak(['2026-10-17'], '2026-10-20'), 0);
 });
+
+test('exemples : JSON valide, coût mensuel, recherche sans accents', async () => {
+  const { EXAMPLES, findExample, monthlyCost, searchExamples } = await import('../src/lib/examples.js');
+  const { CATEGORIES } = await import('../src/lib/categories.js');
+  const ids = new Set(CATEGORIES.map((c) => c.id));
+  assert.ok(EXAMPLES.length >= 80);
+  for (const e of EXAMPLES) {
+    assert.ok(ids.has(e.category), e.label);
+    assert.ok(Number.isInteger(e.amount) && e.amount > 0, e.label);
+  }
+  assert.equal(monthlyCost(findExample('netflix')), 1349);
+  assert.equal(monthlyCost(findExample('Café au comptoir')), 4400);
+  assert.equal(monthlyCost(findExample('Concert')), null);
+  assert.equal(searchExamples('telephone')[0].label, 'Forfait téléphone');
+  assert.ok(searchExamples('', { habitsOnly: true, limit: 200 }).every((e) => e.per !== 'achat'));
+});
+
+test('objectif : habitudes tirées des dépenses des 90 derniers jours', async () => {
+  const { habitsFromExpenses } = await import('../src/lib/goal.js');
+  const list = [
+    { amount: 1349, date: '2026-10-01', category: 'abonnements', note: 'Netflix' },
+    { amount: 1349, date: '2026-09-01', category: 'abonnements', note: 'netflix' },
+    { amount: 1349, date: '2026-08-01', category: 'abonnements', note: 'Netflix ' },
+    { amount: 9000, date: '2026-10-10', category: 'courses', note: '' },
+    { amount: 99999, date: '2026-01-01', category: 'shopping', note: 'Trop vieux' },
+  ];
+  const habits = habitsFromExpenses(list, '2026-10-20');
+  assert.deepEqual(habits.map((h) => [h.label, h.monthly, h.count]), [['Courses', 3000, 1], ['Netflix', 1349, 3]]);
+});

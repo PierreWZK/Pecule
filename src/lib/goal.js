@@ -14,6 +14,29 @@ export const HABITS = [
 
 export const monthsNeeded = (price, monthly) => Math.ceil(price / monthly);
 
+/**
+ * Les dépenses de l'utilisateur qui pourraient devenir l'habitude à arrêter : regroupées par note
+ * (à défaut par catégorie) sur les 90 derniers jours, avec leur coût moyen par mois. Les plus chères d'abord.
+ */
+export function habitsFromExpenses(expenses, today = todayKey(), limit = 6) {
+  const since = new Date(Date.parse(`${today}T00:00:00Z`) - 90 * 86400000).toISOString().slice(0, 10);
+  const groups = new Map();
+  for (const e of expenses) {
+    if (e.date <= since || e.date > today) continue;
+    const note = e.note?.trim();
+    const key = note ? `note:${note.toLowerCase()}` : `cat:${e.category}`;
+    const g = groups.get(key) ?? { label: note || category(e.category).label, category: e.category, total: 0, count: 0 };
+    g.total += e.amount;
+    g.count += 1;
+    groups.set(key, g);
+  }
+  return [...groups.values()]
+    .map((g) => ({ label: g.label, category: g.category, count: g.count, monthly: Math.round(g.total / 3) }))
+    .filter((g) => g.monthly >= 100)
+    .sort((a, b) => b.monthly - a.monthly)
+    .slice(0, limit);
+}
+
 /** Où en est l'objectif : mois écoulés depuis sa création, somme mise de côté (théorique), mois restants */
 export function progress(goal, today = todayKey()) {
   const start = goal.created.slice(0, 10);

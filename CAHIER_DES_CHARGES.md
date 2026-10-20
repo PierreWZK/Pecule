@@ -52,9 +52,13 @@ Sur le tableau de bord, la carte de l'objectif montre :
 
 L'objectif se modifie à tout moment ; une fois atteint, on en choisit un autre.
 
+- À l'inscription, **« Ignorer l'objectif »** : le choix est retenu sur le compte (`users.goal_skipped`), l'objectif n'est plus redemandé ; on le choisit plus tard depuis le tableau de bord.
+- L'habitude à arrêter se choisit parmi les idées courantes, **les dépenses de l'utilisateur** (regroupées par note, sinon par catégorie, moyenne mensuelle sur 90 jours) ou les **exemples** ; le nom et le montant restent modifiables.
+
 ### C. Dépenses
 
-- Formulaire rapide : montant (virgule acceptée), date (aujourd'hui par défaut), catégorie, note.
+- Formulaire rapide : quoi, montant (virgule acceptée), catégorie, date (aujourd'hui par défaut).
+- **Exemples de dépenses** dans `src/data/expense-examples.json` (libellé, catégorie, prix habituel, fréquence) : proposés dans le champ « Quoi » avec les notes déjà utilisées ; en choisir un remplit la catégorie et le montant.
 - Catégories fixes : Logement, Courses, Restaurants, Transport, Loisirs, Abonnements, Santé, Shopping, Autres.
 - Liste du mois avec modification et suppression.
 

@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { errorMessage, saveExpense } from '../api.js';
 import { CATEGORIES, category } from '../lib/categories.js';
 import { crossing } from '../lib/budgets.js';
 import { monthOf } from '../lib/dates.js';
 import { formatEuros, parseEuros, toInput } from '../lib/money.js';
 import { inMonth, total } from '../lib/stats.js';
+import { EXAMPLES, findExample, normalize } from '../lib/examples.js';
 
 /** Catégorie la plus utilisée récemment (proposée par défaut) */
 function usualCategory(expenses) {
@@ -13,12 +14,48 @@ function usualCategory(expenses) {
   return Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? 'courses';
 }
 
+/** Ce qu'on sait d'une note : sa dernière dépense chez l'utilisateur, sinon l'exemple du même nom */
+function known(note, expenses) {
+  const key = normalize(note);
+  if (!key) return null;
+  const mine = expenses.find((e) => e.note && normalize(e.note) === key);
+  return mine ? { category: mine.category, amount: mine.amount } : findExample(note);
+}
+
+/** Notes déjà utilisées, puis exemples (sans doublon) : les suggestions du champ « Quoi » */
+function suggestions(expenses) {
+  const seen = new Set();
+  const list = [];
+  for (const label of [...expenses.map((e) => e.note?.trim()).filter(Boolean), ...EXAMPLES.map((e) => e.label)]) {
+    const key = normalize(label);
+    if (!seen.has(key)) {
+      seen.add(key);
+      list.push(label);
+    }
+  }
+  return list;
+}
+
 /** Ajout ou modification d'une dépense ; prévient si un budget est franchi */
 export default function ExpenseForm({ data, today, update, notify, editing = null, onDone }) {
   const [amount, setAmount] = useState(editing ? toInput(editing.amount) : '');
   const [date, setDate] = useState(editing?.date ?? today);
   const [cat, setCat] = useState(editing?.category ?? usualCategory(data.expenses));
   const [note, setNote] = useState(editing?.note ?? '');
+  // Montant rempli par une suggestion : il suit les suggestions suivantes tant qu'on ne l'a pas tapé soi-même
+  const [autoAmount, setAutoAmount] = useState(false);
+  const listId = useId();
+
+  function changeNote(value) {
+    setNote(value);
+    const hit = known(value, data.expenses);
+    if (!hit) return;
+    setCat(hit.category);
+    if (!amount || autoAmount) {
+      setAmount(toInput(hit.amount));
+      setAutoAmount(true);
+    }
+  }
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
 
@@ -36,6 +73,7 @@ export default function ExpenseForm({ data, today, update, notify, editing = nul
       if (!editing) {
         setAmount('');
         setNote('');
+        setAutoAmount(false);
       }
       onDone?.(saved);
     } catch (err) {
@@ -59,8 +97,12 @@ export default function ExpenseForm({ data, today, update, notify, editing = nul
 
   return (
     <form className="expense-form" onSubmit={submit}>
+      <label className="grow-2"><span>Quoi <span className="muted">(facultatif)</span></span>
+        <input value={note} onChange={(e) => changeNote(e.target.value)} list={listId} maxLength={200} placeholder="Netflix, boulangerie, plein d'essence…" autoComplete="off" />
+        <datalist id={listId}>{suggestions(data.expenses).map((label) => <option key={label} value={label} />)}</datalist>
+      </label>
       <label className="grow-1">Montant
-        <div className="input-euro"><input inputMode="decimal" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="12,50" required autoFocus={!!editing} /><span>€</span></div>
+        <div className="input-euro"><input inputMode="decimal" value={amount} onChange={(e) => { setAmount(e.target.value); setAutoAmount(false); }} placeholder="12,50" required autoFocus={!!editing} /><span>€</span></div>
       </label>
       <label className="grow-2">Catégorie
         <select value={cat} onChange={(e) => setCat(e.target.value)}>
@@ -69,9 +111,6 @@ export default function ExpenseForm({ data, today, update, notify, editing = nul
       </label>
       <label className="grow-1">Date
         <input type="date" value={date} max={today} onChange={(e) => setDate(e.target.value)} required />
-      </label>
-      <label className="grow-2"><span>Note <span className="muted">(facultatif)</span></span>
-        <input value={note} onChange={(e) => setNote(e.target.value)} maxLength={200} placeholder="Boulangerie, plein d'essence…" />
       </label>
       <div className="form-actions">
         <button className="btn" disabled={busy}>{busy ? '…' : editing ? 'Enregistrer' : 'Ajouter'}</button>
