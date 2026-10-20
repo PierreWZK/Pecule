@@ -2,6 +2,8 @@
 
 > Jour 07 du défi **30 jours, 30 projets** · React · Vite · Recharts · PocketBase · 🟢 **En ligne : [pecule.projectp.fr](https://pecule.projectp.fr)**
 
+![Page d'accueil de Pécule](docs/preview.png)
+
 Pécule est un tableau de bord de dépenses personnelles. On crée son compte, on note ses dépenses, et Pécule montre où part l'argent, mois par mois et catégorie par catégorie. Il compare au mois précédent et prévient quand un budget est dépassé.
 
 📄 Les règles détaillées sont dans le [cahier des charges](CAHIER_DES_CHARGES.md).
