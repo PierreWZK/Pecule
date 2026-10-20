@@ -1,0 +1,26 @@
+{
+  "name": "pecule",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Pécule : où passe votre argent, en un coup d'œil (jour 07 du défi 30 jours, 30 projets)",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "pocketbase": "^0.28.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "recharts": "^3.10.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.1.2",
+    "vite": "^8.3.4"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

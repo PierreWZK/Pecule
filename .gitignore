@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.env.local
+pocketbase/pb_data/
+.claude/
+CLAUDE.md
+graphify-out/
