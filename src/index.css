@@ -88,8 +88,12 @@ label.inline select { width: auto; }
 .page { max-width: 1120px; margin: 0 auto; padding: 1.5rem clamp(1rem, 4vw, 2.5rem) 3rem; display: grid; gap: 1.25rem; }
 .page-head { display: flex; align-items: end; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
 .page-head h1 { margin: 0; }
-.footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 2rem 1rem; }
-.footer a { color: var(--muted); }
+.footer {
+  width: min(1120px, 100% - 2 * clamp(1rem, 4vw, 2.5rem)); margin: 1rem auto 0; padding-block: 1.5rem;
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem;
+  border-top: 1px solid var(--line); color: var(--muted); font-size: .88rem;
+}
+.footer a { color: var(--ink); }
 
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.25rem; min-width: 0; }
 .card-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: .75rem; }

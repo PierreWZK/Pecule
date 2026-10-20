@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { errorMessage, signIn, signUp } from '../api.js';
 import Logo from '../components/Logo.jsx';
+import Footer from '../components/Footer.jsx';
 import ChallengeQuestion from '../components/ChallengeQuestion.jsx';
 import GoalCard from '../components/GoalCard.jsx';
 import BudgetBar from '../components/BudgetBar.jsx';
@@ -303,10 +304,7 @@ export default function Landing() {
         </section>
       </main>
 
-      <footer className="footer">
-        Pécule · jour 07 du défi <a href="https://projectp.fr/">30 jours, 30 projets</a> ·{' '}
-        <a href="https://github.com/PierreWZK/Pecule">code source</a>
-      </footer>
+      <Footer />
     </div>
   );
 }

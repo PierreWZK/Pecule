@@ -4,6 +4,7 @@ import { clearLocalAnswers, localAnswers } from './lib/localChallenge.js';
 import { todayKey } from './lib/dates.js';
 import Nav from './components/Nav.jsx';
 import Toast from './components/Toast.jsx';
+import Footer from './components/Footer.jsx';
 import Landing from './pages/Landing.jsx';
 import Onboarding from './pages/Onboarding.jsx';
 import Dashboard from './pages/Dashboard.jsx';
@@ -112,10 +113,7 @@ export default function App() {
       <main className="page">
         <Page data={data} today={today} update={update} notify={notify} />
       </main>
-      <footer className="footer">
-        Pécule · jour 07 du défi <a href="https://projectp.fr/">30 jours, 30 projets</a> ·{' '}
-        <a href="https://github.com/PierreWZK/Pecule">code source</a>
-      </footer>
+      <Footer />
       {toast && <Toast key={toast.key} {...toast} onClose={closeToast} />}
     </>
   );
