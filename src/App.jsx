@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { loadAll, pb, signOut } from './api.js';
+import { loadAll, pb, saveAnswer, signOut } from './api.js';
+import { clearLocalAnswers, localAnswers } from './lib/localChallenge.js';
 import { todayKey } from './lib/dates.js';
 import Nav from './components/Nav.jsx';
 import Toast from './components/Toast.jsx';
@@ -11,6 +12,21 @@ import Budgets from './pages/Budgets.jsx';
 import Challenge from './pages/Challenge.jsx';
 
 const PAGES = { '': Dashboard, depenses: Expenses, budgets: Budgets, defi: Challenge };
+
+/** Les défis joués sans compte rejoignent le compte (sauf les jours déjà joués dessus) : la série continue */
+async function importLocalAnswers(data) {
+  const known = new Set(data.answers.map((a) => a.day));
+  const added = [];
+  for (const a of localAnswers().filter((a) => !known.has(a.day))) {
+    try {
+      added.push(await saveAnswer(a));
+    } catch {
+      // réponse refusée (déjà enregistrée ailleurs) : on l'ignore
+    }
+  }
+  clearLocalAnswers();
+  return added.length ? { ...data, answers: [...added, ...data.answers].sort((a, b) => b.day.localeCompare(a.day)) } : data;
+}
 
 // Navigation par l'ancre de l'adresse : #/, #/depenses, #/budgets, #/defi, #/objectif
 function useRoute() {
@@ -41,7 +57,7 @@ export default function App() {
   const reload = useCallback(async () => {
     try {
       setError(null);
-      setData(await loadAll());
+      setData(await importLocalAnswers(await loadAll()));
     } catch (e) {
       // Session expirée ou révoquée : retour à l'accueil
       if (e?.status === 401 || e?.status === 403) signOut();

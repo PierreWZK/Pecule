@@ -73,6 +73,13 @@ L'objectif se modifie à tout moment ; une fois atteint, on en choisit un autre.
 - Une question tirée d'après la date (heure de Paris) : la même pour tout le monde.
 - 4 réponses, une seule tentative, puis l'explication.
 - Série 🔥 de jours d'affilée et taux de bonnes réponses, gardés sur le compte.
+- **Sans compte**, le défi se joue depuis la page d'accueil : la réponse est gardée dans le navigateur, et rejoint le compte à l'inscription ou à la connexion.
+
+### G. Page d'accueil
+
+- Ce que fait Pécule en une phrase, et deux actions : créer un compte, jouer au défi du jour.
+- Un **simulateur d'objectif** sans compte ; l'objectif essayé pré-remplit l'étape « objectif » après l'inscription.
+- Comment ça marche (3 étapes), le défi du jour, un aperçu du tableau de bord avec des données fictives, inscription et connexion, questions fréquentes.
 
 ## 4. Cahier des charges technique
 

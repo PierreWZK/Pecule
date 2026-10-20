@@ -10,6 +10,11 @@ Pécule est un tableau de bord de dépenses personnelles. On crée son compte, o
 
 ## Fonctionnalités
 
+**🏠 Une page d'accueil qui explique**
+
+- Un **simulateur** à essayer sans compte : l'objet, son prix, l'habitude à arrêter → « dans 13 mois ». L'objectif essayé pré-remplit l'inscription.
+- Comment ça marche en trois étapes, le défi du jour jouable, un aperçu du tableau de bord avec des données fictives, une FAQ.
+
 **🎯 Un objectif qui motive**
 
 - À l'inscription : l'objet dont on rêve et son prix, puis l'habitude qu'on serait prêt à arrêter (café du matin, livraison de repas, cigarettes…) et son coût par mois.
@@ -32,6 +37,7 @@ Pécule est un tableau de bord de dépenses personnelles. On crée son compte, o
 
 - Une question de finances perso par jour, la même pour tout le monde (tirée d'après la date, heure de Paris).
 - Une seule tentative, puis l'explication ; série de jours d'affilée et taux de bonnes réponses.
+- **Jouable sans compte** depuis la page d'accueil : la réponse est gardée sur l'appareil, puis rejoint le compte à l'inscription (la série continue).
 
 ## Structure
 

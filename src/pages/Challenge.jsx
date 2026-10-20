@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { errorMessage, saveAnswer } from '../api.js';
+import ChallengeQuestion from '../components/ChallengeQuestion.jsx';
 import { questionOf, streak } from '../lib/challenge.js';
 import { dayLabel } from '../lib/dates.js';
 import { QUESTIONS } from '../lib/questions.js';
 
-const LETTERS = ['A', 'B', 'C', 'D'];
-
-/** Le défi du jour : une question, une seule tentative, puis l'explication */
+/** Le défi du jour d'un compte : une question, une seule tentative, la série */
 export default function Challenge({ data, today, update, notify }) {
   const question = questionOf(today);
   const answer = data.answers.find((a) => a.day === today);
@@ -41,24 +40,9 @@ export default function Challenge({ data, today, update, notify }) {
       </section>
 
       <section className="card challenge">
-        <h2>{question.q}</h2>
-        <div className="choices">
-          {question.choices.map((choice, i) => {
-            const state = !answer ? '' : i === question.answer ? 'right' : i === answer.choice ? 'wrong' : 'dim';
-            return (
-              <button key={choice} className={`choice ${state}`} onClick={() => choose(i)} disabled={!!answer || busy} aria-pressed={answer?.choice === i}>
-                <span className="letter">{LETTERS[i]}</span>{choice}
-              </button>
-            );
-          })}
-        </div>
-        {answer && (
-          <div className={`verdict ${answer.correct ? 'right' : 'wrong'}`} role="status">
-            <strong>{answer.correct ? '✅ Bonne réponse !' : `❌ Raté : c'était « ${question.choices[question.answer]} ».`}</strong>
-            <p>{question.explain}</p>
-            <p className="muted small">Revenez demain pour garder votre série.</p>
-          </div>
-        )}
+        <ChallengeQuestion question={question} answer={answer} onChoose={choose} busy={busy}>
+          <p className="muted small">Revenez demain pour garder votre série.</p>
+        </ChallengeQuestion>
       </section>
 
       {past.length > 0 && (

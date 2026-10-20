@@ -5,15 +5,30 @@ import { monthLabel, shiftMonth, todayKey, monthOf } from '../lib/dates.js';
 import { formatEuros, parseEuros, toInput } from '../lib/money.js';
 import Logo from '../components/Logo.jsx';
 
+export const DRAFT_KEY = 'pecule:objectif';
+
+/** Objectif essayé dans le simulateur de l'accueil, avant l'inscription */
+function draftGoal() {
+  try {
+    const d = JSON.parse(sessionStorage.getItem(DRAFT_KEY) ?? 'null');
+    return d && HABITS.some((h) => h.id === d.habitId) ? d : null;
+  } catch {
+    return null;
+  }
+}
+
+
 /** L'objectif, en trois étapes : l'objet, l'habitude à arrêter, le résultat */
 export default function Onboarding({ user, goal, onDone, onSkip }) {
-  const custom = goal && !HABITS.some((h) => h.label === goal.habit);
-  const [step, setStep] = useState(1);
-  const [item, setItem] = useState(goal?.item ?? '');
-  const [price, setPrice] = useState(goal ? toInput(goal.price) : '');
-  const [habitId, setHabitId] = useState(goal ? (custom ? 'autre' : HABITS.find((h) => h.label === goal.habit).id) : '');
-  const [customLabel, setCustomLabel] = useState(custom ? goal.habit : '');
-  const [monthly, setMonthly] = useState(goal ? toInput(goal.habit_monthly) : '');
+  const draft = goal ? null : draftGoal();
+  const start = goal ?? (draft && { item: draft.item, price: draft.price, habit: HABITS.find((h) => h.id === draft.habitId).label, habit_monthly: draft.monthly });
+  const custom = start && !HABITS.some((h) => h.label === start.habit);
+  const [step, setStep] = useState(draft ? 3 : 1);
+  const [item, setItem] = useState(start?.item ?? '');
+  const [price, setPrice] = useState(start ? toInput(start.price) : '');
+  const [habitId, setHabitId] = useState(start ? (custom ? 'autre' : HABITS.find((h) => h.label === start.habit).id) : '');
+  const [customLabel, setCustomLabel] = useState(custom ? start.habit : '');
+  const [monthly, setMonthly] = useState(start ? toInput(start.habit_monthly) : '');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
 
@@ -42,6 +57,11 @@ export default function Onboarding({ user, goal, onDone, onSkip }) {
     try {
       // Un autre objet, c'est un nouvel objectif : la progression repart de zéro
       const saved = goal && goal.item !== data.item ? await restartGoal(goal, data) : await saveGoal(goal, data);
+      try {
+        sessionStorage.removeItem(DRAFT_KEY);
+      } catch {
+        // stockage indisponible : rien à effacer
+      }
       onDone(saved);
     } catch (err) {
       setError(errorMessage(err));
