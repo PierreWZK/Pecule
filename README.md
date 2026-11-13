@@ -1,8 +1,14 @@
 # Pécule · Où passe votre argent, en un coup d'œil
 
-> Jour 07 du défi **30 jours, 30 projets** · React · Vite · Recharts · PocketBase · 🟢 **En ligne : [pecule.projectp.fr](https://pecule.projectp.fr)**
+🌐 **[pecule.projectp.fr](https://pecule.projectp.fr/)** · Jour 07 du défi **[30 jours, 30 projets](https://projectp.fr/)** · [Dépôt du défi](https://github.com/PierreWZK/30DaysProjects)
 
-![Page d'accueil de Pécule](docs/preview.png)
+Stack : React, Vite, Recharts, PocketBase.
+
+[![Page d'accueil de Pécule](docs/preview-accueil.png)](https://pecule.projectp.fr/)
+
+<p align="center">
+  <img src="docs/preview-mobile.png" alt="Pécule sur téléphone" width="260">
+</p>
 
 Pécule est un tableau de bord de dépenses personnelles. On crée son compte, on note ses dépenses, et Pécule montre où part l'argent, mois par mois et catégorie par catégorie. Il compare au mois précédent et prévient quand un budget est dépassé.
 
@@ -90,3 +96,14 @@ Au premier démarrage, PocketBase affiche dans ses logs un lien d'installation p
 ## Stack
 
 React 19, Vite, Recharts, PocketBase. Polices Fraunces et Inter (Google Fonts).
+
+---
+
+## Le défi 30 jours, 30 projets
+
+Un projet complet par jour pendant 30 jours, chacun en ligne sur son propre sous-domaine.
+
+- 🗂️ **Tous les projets** : [projectp.fr](https://projectp.fr/)
+- 💻 **Le dépôt du défi** : [github.com/PierreWZK/30DaysProjects](https://github.com/PierreWZK/30DaysProjects)
+- ⬅️ **Jour précédent** : [Sursaut, jeu de réflexes](https://sursaut.projectp.fr/)
+- ➡️ **Jour suivant** : [Détour, carburant et détours](https://detour.projectp.fr/)
